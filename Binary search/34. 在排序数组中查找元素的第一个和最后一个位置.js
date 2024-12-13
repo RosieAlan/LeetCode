@@ -19,37 +19,41 @@
  * @param {number} target
  * @return {number[]}
  */
-var searchRange = function (nums, target) {
-    console.log('nums', nums);
-    let a = 0;
-    let res = [];
-    let map = new Map();
-    for (let i = 0; i < nums.length; i++) {
-      if (nums[i] == target) {
-        a = i;
-        map.set(a, nums[i]);
-      }
+var searchRange = function(nums, target) {
+    const findFirst = (nums, target) => {
+        let left = 0, right = nums.length - 1;
+        while (left <= right) {
+            const mid = Math.floor((left + right) / 2);
+            if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    };
+
+    const findLast = (nums, target) => {
+        let left = 0, right = nums.length - 1;
+        while (left <= right) {
+            const mid = Math.floor((left + right) / 2);
+            if (nums[mid] <= target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return right;
+    };
+
+    const first = findFirst(nums, target);
+    const last = findLast(nums, target);
+
+    if (first <= last && nums[first] === target && nums[last] === target) {
+        return [first, last];
     }
-    for (let j = nums.length; j > 0; j--) {
-      if (nums[j] == target) {
-        z = j;
-        map.set(z, nums[j]);
-      }
-    }
-    map.forEach((v, k, m) => {
-      res.push(k);
-      console.log('k', k);
-      console.log('v', v);
-    });
-    console.log(map);
-    if (res.length == 0) {
-      return [-1, -1];
-    } else if(res.length==1){
-      return [res[0],res[0]];
-    }else{
-      return [res[0],res[res.length-1]]
-    }
-  };
-  
-  console.log(searchRange([3,3,3],3));
+    return [-1, -1];
+};
+
+console.log(searchRange([3,3,3], 3));
   
